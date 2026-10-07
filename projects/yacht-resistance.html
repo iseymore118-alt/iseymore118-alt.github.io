@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Predicting Yacht Resistance | Isaiah Seymore</title>
+  <meta name="description"
+        content="Estimating full-scale yacht resistance from 1:10 model measurements using Froude similarity and a separate friction correction.">
+  <meta name="theme-color" content="#102d44">
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="../index.html">
+        <span class="monogram" aria-hidden="true">IS</span>
+        <span>Isaiah Seymore</span>
+      </a>
+
+      <button class="menu-toggle"
+              aria-expanded="false"
+              aria-controls="navigation"
+              hidden>
+        Menu
+      </button>
+
+      <nav id="navigation" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a href="../about.html">About</a>
+        <a href="../engineering-time-machine.html">Time Machine</a>
+        <a href="../notes.html">Notes</a>
+        <a href="../resume.html">Résumé</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="shell section article">
+      <p class="eyebrow">Coursework · MATLAB · Hydrodynamics</p>
+
+      <h1 style="font-size:clamp(2.5rem,5vw,4rem)">
+        Predicting Full-Scale Yacht Resistance<span class="accent">.</span>
+      </h1>
+
+      <p class="lead">
+        Using measurements from a 1:10 model to estimate the resistance
+        of a seven-meter yacht.
+      </p>
+
+      <h2>The problem</h2>
+
+      <p>
+        Testing a full-size ship can be expensive, so engineers often
+        work with smaller models. The challenge is that making a vessel
+        smaller changes how it interacts with the water. This coursework
+        analysis explored how measurements from a 1:10 model could be
+        used to estimate the resistance of a seven-meter yacht.
+      </p>
+
+      <p>
+        The main issue was that wave-making and friction do not scale
+        in the same way. Matching the Froude number lets us compare the
+        model and yacht under similar conditions for wave formation.
+        However, their Reynolds numbers are different, so simply
+        multiplying the measured force by a scale factor would not
+        account for the change in friction.
+      </p>
+
+      <h2>My approach</h2>
+
+      <p>
+        I used MATLAB to interpolate the supplied model resistance
+        measurements over a range of speeds. For each full-scale speed,
+        I calculated the corresponding model speed using Froude
+        similarity.
+      </p>
+
+      <p>
+        I then estimated the model’s frictional resistance and
+        subtracted it from its total resistance. I treated the remaining
+        coefficient as an estimate of the wave-making contribution,
+        carried it over to the full-scale yacht, and calculated friction
+        separately using the yacht’s Reynolds number.
+      </p>
+
+      <p>
+        This produced three curves: estimated frictional resistance,
+        estimated residuary resistance, and total resistance.
+      </p>
+
+      <h2>What the results showed</h2>
+
+      <figure style="margin:28px 0">
+        <img
+          src="../assets/yacht-resistance.png"
+          alt="Predicted yacht resistance from zero to 8.5 knots.
+               Total resistance rises sharply at higher speeds,
+               reaching approximately 3.8 kilonewtons."
+          style="display:block;width:100%;height:auto">
+
+        <figcaption class="muted" style="margin-top:12px;font-size:0.9375rem">
+          Predicted full-scale resistance from 1:10 model measurements.
+          The curve labeled “Wave-Making Drag” represents the estimated
+          residuary component obtained after subtracting model friction.
+        </figcaption>
+      </figure>
+
+      <p>
+        At lower speeds, friction accounted for most of the predicted
+        resistance. Around 6.3 knots, the estimated residuary component
+        overtook friction and began increasing much more sharply.
+        By 8.5 knots, the predicted total resistance was approximately
+        3.8 kN.
+      </p>
+
+      <p>
+        What makes this interesting is that the yacht’s resistance
+        does not increase evenly with speed. In the higher-speed range,
+        a relatively small increase in speed comes with a much larger
+        increase in the force needed to maintain it.
+      </p>
+
+      <h2>Limits of the analysis</h2>
+
+      <p>
+        These results are predictions based on model data, rather than
+        measurements from the full-size yacht. The sharp corners in
+        the curves come from linear interpolation and should not be
+        interpreted as sudden physical changes.
+      </p>
+
+      <p>
+        The measured model speeds correspond to approximately
+        1.85–8.49 knots at full scale. I added a zero-force point at
+        zero speed, but the region between that point and the first
+        measurement is not supported by additional test data.
+        The 8.5-knot endpoint also involves a small extrapolation
+        beyond the highest measured speed.
+      </p>
+
+      <p>
+        The lower-speed region needs particular care. Connecting the
+        origin to the first measurement with a straight line does not
+        establish the correct physical behavior there. The friction
+        correlation also assumes turbulent behavior, which limits its
+        use at low Reynolds numbers.
+      </p>
+
+      <p>
+        Finally, subtracting friction does not isolate wave-making
+        perfectly. The remainder is more accurately called residuary
+        resistance because it can contain other effects.
+      </p>
+
+      <h2>What I take from this</h2>
+
+      <p>
+        The important part of this analysis is understanding what can
+        be carried from a model to a full-size vessel and what needs
+        to be recalculated. Matching one similarity condition does
+        not mean that every part of the flow behaves the same way.
+      </p>
+
+      <p style="margin-top:40px">
+        <a class="text-link" href="../projects.html">Back to projects</a>
+      </p>
+    </article>
+  </main>
+
+  <footer class="shell">
+    <span>© <span data-year>2026</span> Isaiah Seymore</span>
+    <span>Engineering · Reading · Curiosity</span>
+  </footer>
+</body>
+</html>
